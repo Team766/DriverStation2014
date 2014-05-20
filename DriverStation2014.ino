@@ -22,23 +22,24 @@ void loop()
 
 void setupPins(void){
   // Set all the digital pins as inputs
+  // also analog pins
   // with the pull-up enabled, except for the 
   // two serial line pins
   
   for (int i = 2; i <= 10; i++){
     pinMode(i, INPUT_PULLUP);
   }
-  pinMode( 11, OUTPUT);
-  digitalWrite( 11, HIGH);
-  pinMode( 13, OUTPUT);
-  digitalWrite( 13, LOW);
-  
-  // pinMode( 12, INPUT); // default
-  
   pinMode(A0, INPUT_PULLUP);
   pinMode(A1, INPUT_PULLUP);
   pinMode(A2, INPUT_PULLUP);
   pinMode(A3, INPUT_PULLUP);
+  
+  //these ports are used for the auton switch,
+  //which has a LED on it
+  pinMode( 11, OUTPUT);
+  digitalWrite( 11, HIGH);
+  pinMode( 13, OUTPUT);
+  digitalWrite( 13, LOW);
 }
 
 dataForController_t getControllerData(void){
@@ -71,29 +72,13 @@ dataForController_t getControllerData(void){
   controllerData.dpadUpOn = !digitalRead(A0);
   controllerData.dpadDownOn = !digitalRead(A1);
   controllerData.dpadLeftOn = !digitalRead(A2);
-  controllerData.dpadRightOn = !digitalRead(A3);
+  controllerData.dpadRightOn = !digitalRead(A3);  
+/*   
+  
+  Key for which name corresponds to which button
   
   
-  
-/*  controllerData.circleOn = !digitalRead(2); 
-  controllerData.squareOn = !digitalRead(3);
-  controllerData.crossOn = !digitalRead(4);
-  controllerData.dpadUpOn = !digitalRead(5); 
-  controllerData.l1On = !digitalRead(6);
-  controllerData.r3On = !digitalRead(7);
-  
-  controllerData.r1On = !digitalRead(8);
-  controllerData.l3On = !digitalRead(9);
-  controllerData.selectOn = !digitalRead(10);
-  controllerData.startOn = !digitalRead(11);
-  controllerData.l2On = !digitalRead(12);
-  controllerData.r2On = !digitalRead(13);*/
-  
-  
-
-
-  
-/*   controllerData.triangleOn //button 4
+  controllerData.triangleOn //button 4
   controllerData.circleOn //button 3
   controllerData.squareOn //button 1
   controllerData.crossOn //button 2
@@ -110,7 +95,11 @@ dataForController_t getControllerData(void){
   controllerData.l3On      //button 11
   controllerData.r3On      //button 12
   controllerData.homeOn //button 13 */
-/*  for (int i = 2; i <= 10; i++){
+  
+/*
+  // Test here, the UnoJoy interface will not work
+  // with this enabled
+  for (int i = 2; i <= 10; i++){
     if(!digitalRead(i)){
     Serial.println("on:");
     Serial.print(i);
@@ -123,10 +112,9 @@ dataForController_t getControllerData(void){
   //  we need to perform a bit shift operation to
   //  lose the 2 least significant bits and get an
   //  8 bit number that we can use  
- /* controllerData.leftStickX = analogRead(A0) >> 2;
-  controllerData.leftStickY = analogRead(A1) >> 2;
-  controllerData.rightStickX = analogRead(A2) >> 2;
-  controllerData.rightStickY = analogRead(A3) >> 2;*/
+ 
+  //For 2014 we only have 1 analog axis, which
+  //is the throttle lever used as a switch
   float grip = 700;
   if(!digitalRead(4)){
     grip = 300;
